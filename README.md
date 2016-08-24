@@ -1,2 +1,0 @@
-# mindbody
-Homework for Mindbody
