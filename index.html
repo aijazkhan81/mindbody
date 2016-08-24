@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html ng-app="myApp" lang="en">
+<head>
+	<title>MindBody Assignment</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.min.css">
+	<link rel="stylesheet/less" href="css/less/style.less">
+</head>
+<body ng-controller="mainCtrl">
+	<header class="row">
+		<div class="col-sm-2">
+			<a href="#"><img src="images/logo.png" class="img-responsive" alt="Urban Yoga Logo" id="logo"></a>
+		</div>
+		<div class="col-sm-offset-2 col-sm-8" id="menudiv">
+			<nav class="navbar navbar-default" id="topmenu">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li class="active"><a href="#">Dashboard <span class="sr-only">(current)</span></a></li>
+							<li><a href="#">Sign In</a></li>
+							<li><a href="#">Classes</a></li>
+							<li><a href="#">Workshops</a></li>
+							<li><a href="#">Appointments</a></li>
+							<li><a href="#">Client Home</a></li>
+							<li><a href="#">Retail</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</header>
+	<div class="row" id="submenu">
+		<div class="container">
+			<div class="col-sm-2 col-xs-6"><a href="#">Dashboard</a></div>
+			<div class="col-sm-2 col-xs-6"><a href="#" class="active">Business Overview</a></div>
+			<div class="col-sm-2 col-xs-6"><a href="#">Schedule</a></div>
+			<div class="col-sm-2 col-xs-6"><a href="#">Reports</a></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="container">
+			<div class="col-sm-2 tac">
+				<button id="plusButton" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"></span></button>
+				<p class="mb20"><strong>New Program</strong></p>
+			</div>
+			<div class="col-sm-10" style="padding: 0;">	
+				<div class="row">
+					<!-- Repeating the list of programs -->
+					<div class="col-sm-4 p5p" ng-repeat="program in programs | limitTo:3">
+						<div class="yogabox">
+							<div class="p20">
+								<p class="classTitle">{{program.Name}} 
+									<button class="pencilbutton"><span class="glyphicon glyphicon-pencil"></span></button>
+								</p>
+								<p class="salesBy">Sales By Month
+								</p>
+								<img src="images/graph.png" class="graphimg" alt="Graph Image">
+							</div>
+							<div class="tms p10">
+								<table class="datatable">
+									<tr>
+										<td class="greyish">Total Monthly<br>Sales</td>
+										<td class="greyish">
+											Current <br>
+											<span class="dvalue">${{program.TotalMonthlySales | number:0}}</span>
+										</td>
+										<td>
+											<p class="greyish">1-Year</p>
+											<img ng-src="images/spark_line.png" class="img-responsive" alt="d3 Graph image">
+										</td>
+									</tr>
+								</table>
+							</div> 
+							<div class="morediv">
+								<table class="extratable" ng-show="program.moreview">
+									<tr>
+										<th>Price Name</th>
+										<th>Current</th>
+										<th>1-year</th>
+									</tr>
+									<!-- Repeating list of prices for each program -->
+									<tr ng-repeat="price in prices | limitTo:7">
+										<td>{{price.Name}}</td>
+										<td class="greyish">${{price.Sales | number:0}}</td>
+										<td><img src="images/spark_line.png" class="img-responsive" alt="d3 Graph image"></td>
+									</tr>
+								</table>
+								<p class="greyish morebut" ng-click="program.moreview = !program.moreview;">{{!program.moreview ? 'More' : 'Less'}}</p>
+							</div>
+						</div>
+					</div>
+				</div> <br>
+
+				<div class="row">
+					<table class="maintable">
+						<tr>
+							<th>All Programs</th>
+							<th>Monthly Sales</th>
+							<th>Monthly Attendance</th>
+						</tr>
+						<!-- Repeating list of programs again -->
+						<tr ng-repeat="programlist in programs | limitTo: 3">
+							<td>
+								<p class="tdtitle xsize">
+									{{programlist.Name}}
+								</p>
+								<p class="small greyish">more</p>
+							</td>
+							<td>
+								<p class="xsize">${{programlist.TotalMonthlySales | number:0}}</p>
+							</td>
+							<td>
+								<p class="xsize">{{programlist.MonthlyAttendance | number:0}} <span class="small">visits</span></p>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title tac" id="myModalLabel">Add a New Program</h4>
+					</div>
+					<div class="modal-body">
+						<form class="row">
+							<div class="row">
+								<div class="col-sm-6">
+									<label>Program Type</label>
+								</div>
+								<div class="col-sm-6">
+									<select>
+										<option value="countseries">Count Series</option>
+										<option value="timeseries">Time Series</option>
+										<option value="membership">Membership</option>
+									</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<label for="programtype">Program Type</label>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" name="programtype"  id="programtype" placeholder="Enter Program Type">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<label>Allow online scheduling</label>
+								</div>
+								<div class="col-sm-6">
+									<div class="radio-inline">
+										<input type="radio" name="optradio" value="true">Yes
+									</div>
+									<div class="radio-inline">
+										<input type="radio" name="optradio" value="false">No
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<label for="defaultcapacity">Default capacity</label>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" name="defaultcapacity"  id="defaultcapacity" placeholder="Enter Default capacity">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<label>Tabs this program is on</label>
+								</div>
+								<div class="col-sm-6">
+									<table class="w100">
+										<tr>
+											<td><label class="checkbox-inline"><input type="checkbox" value="classes">Classes</label></td>
+											<td><label class="checkbox-inline"><input type="checkbox" value="appointments">Appointments</label></td>
+										</tr>
+										<tr>
+											<td><label class="checkbox-inline"><input type="checkbox" value="workshops">Workshops</label></td>
+											<td><label class="checkbox-inline"><input type="checkbox" value="outside">Outside</label></td>
+										</tr>
+										<tr>
+											<td><label class="checkbox-inline"><input type="checkbox" value="inside">Inside</label></td>
+											<td><label class="checkbox-inline"><input type="checkbox" value="gym">Gym</label></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script type="text/javascript" src="css/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript">less = {logLevel: 1}</script>
+	<script type="text/javascript" src="css/less/less.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular/app.js"></script>
+	<script type="text/javascript" src="js/angular/services/dataCall.js"></script>
+</body>
+</html>
